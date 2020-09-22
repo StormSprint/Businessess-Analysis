@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+<!--    <meta name="renderer" content="webkit">-->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <script src="../static/admin/js/echarts.min.js"></script>
+    <script type="text/javascript" src="../static/admin/js/rem.js"></script>
+    <link rel="stylesheet" href="../static/admin/css/style.css">
+    <title>江北专线业务管理平台-首页</title>
+    <style type="text/css">
+        #test P{
+            display: inline;
+            font-size: 20px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body style="visibility: hidden;">
+    <div class="container-flex" tabindex="0" hidefocus="true">
+        <div class="box-left">
+            <div class="left-top">
+                <div class="current-num">
+                    <div>专线总数</div>
+                    <p>{{ busniess_count }}</p>
+                </div>
+            </div>
+            <div class="left-center">
+                <div class="title-box">
+                    <p id="switchBtn"><span class="active" data-dataType="income">本月应收</span><img class="line-img" src="../static/admin/img/line-blue.png" alt=""><span data-dataType="expend">实际列收</span></p>
+                </div>
+                <div class="data-box">
+                    <p class="data-number" id="totalProfit">{{ income }}元</p>
+                </div>
+            </div>
+            <div class="left-bottom">
+                <div class="title-box">
+                    <h6>带宽异常</h6>
+                </div>
+                <div id="test" style="text-align: center">
+                    <a href="#"><p>123</p></a><p>条</p>
+                    <p>专线带宽异常</p>
+                </div>
+                <div class="title-box">
+                    <h6>近三个月即将到期合同</h6>
+                </div>
+                <div id="test" style="text-align: center">
+                    <a href="#"><p>{{ expiration_count }}</p></a><p>个</p>
+                    <p>合计</p><p>{{ expiration_amount }}</p><p>元</p>
+                </div>
+            </div>
+        </div>
+        <div class="box-center">
+            <div class="center-top">
+                <h1>江北专线业务管理平台</h1>
+            </div>
+            <div class="title-box">
+                <h6>分公司2019年政企专线列收</h6>
+            </div>
+            <div class="center-center">
+                <div id="income" style="width: 100%;height: 100%;"></div>
+                <script>
+                    var colors=['#5793f3', '#d14a61', '#675bba'];
+                    var myChart1 = echarts.init(document.getElementById('income'))
+                    option = {
+                        color: colors,
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'cross'
+                            }
+                        },
+                        grid: {
+                            right: '20%'
+                        },
+                    
+                        legend: {
+                            data:['应当列收','实际列收','差额'],
+                            textStyle: {
+                                color: '#FFFFFF',
+                            }
+                        },
+                        xAxis: [
+                            {
+                                axisLabel: {
+                                    color: '#FFFFFF'
+                                },
+                                type: 'category',
+                                axisTick: {
+                                    alignWithLabel: true
+                                },
+                                data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: 'value',
+                                name: '应当列收',
+                                min: 0,
+                                max: 250,
+                                position: 'right',
+                                axisLine: {
+                                    lineStyle: {
+                                        color: colors[0]
+                                    }
+                                },
+                                axisLabel: {
+                                    formatter: '{value} 元'
+                                }
+                            },
+                            {
+                                type: 'value',
+                                name: '实际列收',
+                                min: 0,
+                                max: 250,
+                                position: 'right',
+                                offset: 60,
+                                axisLine: {
+                                    lineStyle: {
+                                        color: colors[1]
+                                    },
+
+                                },
+                                axisLabel: {
+                                    formatter: '{value} 元'
+                                }
+                            },
+                            {
+                                type: 'value',
+                                name: '差额',
+                                min: 0,
+                                max: 25,
+                                position: 'left',
+                                axisLine: {
+                                    lineStyle: {
+                                        color: colors[2]
+                                    }
+                                },
+                                axisLabel: {
+                                    formatter: '{value} 元'
+                                }
+                            }
+                        ],
+                        series: [
+                            {
+                                name:'应当列收',
+                                type:'bar',
+                                data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+                            },
+                            {
+                                name:'实际列收',
+                                type:'bar',
+                                yAxisIndex: 1,
+                                data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                            },
+                            {
+                                name:'差额',
+                                type:'line',
+                                yAxisIndex: 2,
+                                data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+                            }
+                        ]}
+                    myChart1.setOption(option)
+                </script>
+            </div>
+            <div class="center-bottom">
+                <div class="title-box">
+                    <h6>各支局列收情况</h6>
+                </div>
+                <div id="sub" style="width: 100%;height: 90%;"></div>
+                <script>
+                	var myChart2 = echarts.init(document.getElementById('sub'))
+                	option = {
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data:['列收','专线数'],
+                            textStyle: {
+                                color : '#FFFFFF',
+                            }
+                        },
+                        toolbox: {
+                            show : true,
+                            feature : {
+                                magicType : {show: true, type: ['line', 'bar']},
+                            }
+                        },
+                        calculable : true,
+                        xAxis : [
+                            {
+                                type : 'category',
+                                data : ['南桥寺','观音桥','大石坝','石马河','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21'],
+                                axisLabel : {
+                                    color: '#FFFFFF',
+                                    interval: 0,
+                                   formatter:function(value)  
+                                   {  
+                                       return value.split("").join("\n");  
+                                   } 
+                                },
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value',
+                                name : '列收',
+                                min: 0,
+                                max: 200,
+                                axisLine: {
+                                    lineStyle: {
+                                        color: colors[0]
+                                    }
+                                },
+                                axisLabel : {
+                                    color : colors[0],
+                                    formatter: '{value} 元'
+                                },
+                            },
+                            {
+                                type : 'value',
+                                name : '专线数',
+                                min: 0,
+                                max: 200,
+                                axisLine: {
+                                    lineStyle: {
+                                        color: colors[1]
+                                    }
+                                },
+                                axisLabel : {
+                                    color : colors[1],
+                                    formatter: '{value} 条'
+                                },
+                            }
+                        ],
+                        series : [
+                            {
+                                name:'列收',
+                                type:'bar',
+                                color : colors[0],
+                                data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 20, 20.0, 6.4, 3.3,5,3,4,7,8,9,10,11,12],
+                                markLine : {
+                                    data : [
+                                        {type : 'average', name: '平均值'}
+                                    ]
+                                },
+                                barWidth: 8
+                            },
+                            {
+                                name:'专线数',
+                                type:'bar',
+                                color : colors[1],
+                                data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3,6,7,2,7,8,9,10,11,12],
+                                markLine : {
+                                    data : [
+                                        {type : 'average', name : '平均值'}
+                                    ]
+                                },
+                                yAxisIndex: 1,
+                                barWidth: 8
+                            }
+                        ]
+                    }
+                    myChart2.setOption(option)
+                </script>
+            </div>
+
+        </div>
+        <div class="box-right">
+            <div class="right-top">
+                <div class="title-box">
+                    <h6 id="barTitle">专线平均价格（单位：元）</h6>
+                </div>
+                <div id="avg" style="width: 100%;height:80%;"></div>
+                    <script>
+                    	var myChart3 = echarts.init(document.getElementById('avg'))
+                    	option = {
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            legend: {
+                                textStyle:{
+                                    color: '#FFFFFF',
+                                },
+                                data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                axisLabel:{
+                                    color: '#FFFFFF',
+                                },
+                                type: 'category',
+                                boundaryGap: false,
+                                data: ['周一','周二','周三','周四','周五','周六','周日']
+                            },
+                            yAxis: {
+                                axisLabel:{
+                                    color: '#FFFFFF',
+                                },
+                                type: 'value'
+                            },
+                            series: [
+                                {
+                                    name:'邮件营销',
+                                    type:'line',
+                                    stack: '总量',
+                                    data:[120, 132, 101, 134, 90, 230, 210]
+                                },
+                                {
+                                    name:'联盟广告',
+                                    type:'line',
+                                    stack: '总量',
+                                    data:[220, 182, 191, 234, 290, 330, 310]
+                                },
+                                {
+                                    name:'视频广告',
+                                    type:'line',
+                                    stack: '总量',
+                                    data:[150, 232, 201, 154, 190, 330, 410]
+                                },
+                                {
+                                    name:'直接访问',
+                                    type:'line',
+                                    stack: '总量',
+                                    data:[320, 332, 301, 334, 390, 330, 320]
+                                },
+                                {
+                                    name:'搜索引擎',
+                                    type:'line',
+                                    stack: '总量',
+                                    data:[820, 932, 901, 934, 1290, 1330, 1320]
+                                }
+                            ]
+                        };
+                        myChart3.setOption(option);
+                    </script>
+            </div>
+            <div class="right-center">
+                <div class="title-box">
+                    <h6>专线类型分布</h6>
+                </div>
+                <div id="main" style="width: 100%;height:100%;"></div>
+                    <script>
+                        // 绘制图表。
+                        var myChart4 = echarts.init(document.getElementById('main'))
+                        option = {
+                            series: {
+                                type: 'pie',
+                                radius: '70%',
+                                data: [
+                                    {name: 'A', value: 1212},
+                                    {name: 'B', value: 2323},
+                                    {name: 'C', value: 1919},
+                                    {name: 'D', value: 2000}
+                                ]
+                            }
+                        }
+                        myChart4.setOption(option);
+                        window.onresize = function(){
+                        	myChart1.resize();
+                        	myChart2.resize();
+                        	myChart3.resize();
+                        	myChart4.resize();
+                        }
+                    </script>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="pop-up">
+            <span class="close-pop"></span>
+            <h2 class="title">专线数量</h2>
+            <div class="pop-data-box">
+                <p>123,456,789</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script type="text/javascript" src="../static/admin/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../static/admin/js/layer/layer.min.js"></script>
+<script type="text/javascript" src="../static/admin/js/layer/laydate/laydate.js"></script>
+<script type="text/javascript" src="../static/admin/js/echarts.min.js"></script>
+<script type="text/javascript" src="../static/admin/js/china.js"></script>
+<script type="text/javascript" src="../static/admin/js/data/guangdong.js"></script>
+<script type="text/javascript" src="../static/admin/js/base.js"></script>
+<script type="text/javascript">
+    $('document').ready(function () {
+        $("body").css('visibility', 'visible');
+        var localData = [$('#teacher').val(), $('#start').val() + '/' + $('#end').val(), $('#leader').val()]
+        localStorage.setItem("data", localData);
+        $('#conBtn').on('click', function () {
+            localData = [$('#teacher').val(), $('#start').val() + '/' + $('#end').val(), $('#leader').val()]
+            if (typeof (Storage) !== "undefined") {
+                localStorage.setItem("data", localData);
+                var arr = localStorage.getItem("data").split(',');
+                $('#name_a').html(arr[0]);
+                $('#date_a').html(arr[1]);
+                $('#lea_a').html(arr[2]);
+            }
+        })
+        $('#fangda').on('click', function () {
+            if ($(this).siblings('ul').is(":hidden")) {
+                $(this).addClass('active').siblings('ul').show();
+            } else {
+                $(this).removeClass('active').siblings('ul').hide();
+            }
+        })
+
+        $('.modal-btn>li').on('click', function () {
+            var index = $(this).index();
+            if (index <= 2) {
+                $('.container').attr('style', 'visibility: visible').find('.pop-up').eq(index).attr('style', 'visibility: visible').siblings().attr('style', 'visibility: hidden');
+            } else if (index > 2 && index < 5) {
+                $('.container').attr('style', 'visibility: visible').find('.pop-up').eq(3).attr('style', 'visibility: visible').siblings().attr('style', 'visibility: hidden');
+                if (index != 3) {
+                    $('.pop-data .ranking-box').hide();
+                } else {
+                    $('.pop-data .ranking-box').show();
+                }
+                $('.cont-div').eq(index - 3).attr('style', 'visibility: visible').siblings('.cont-div').attr('style', 'visibility: hidden');
+            } else if (index == 5) {
+                $('.container').attr('style', 'visibility: visible').find('.pop-up').eq(3).attr('style', 'visibility: visible').siblings().attr('style', 'visibility: hidden');
+                $('.pop-data .ranking-box').hide();
+                if ($('#switchBtn').find('.active').data('datatype') == "income") {
+                    $('#titles').html('收入数据');
+                    $('#totalProfits').html({{ income }});
+                    $('.cont-div').eq(2).attr('style', 'visibility: visible').siblings('.cont-div').attr('style', 'visibility: hidden');
+                } else if ($('#switchBtn').find('.active').data('datatype') == 'expend') {
+                    $('#titles').html('支出数据');
+                    $('#totalProfits').html({{ income }});
+                    $('.cont-div').eq(2).attr('style', 'visibility: visible').siblings('div').attr('style', 'visibility: hidden');
+                }
+            }
+        })
+    })
+</script>
+
+
+
+</html>
